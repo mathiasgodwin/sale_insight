@@ -6,18 +6,13 @@ import 'package:sale_insight/src/feature/sale_insight/view/pages/pages.dart';
 
 /// TODO: Finish the docs
 /// HomePage to...
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   /// Static named route for page
   static const String route = 'Home';
 
   /// Static method to return the widget as a PageRoute
   static Route go() => MaterialPageRoute<void>(builder: (_) => HomePage());
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<GetDataCubit, GetDataState>(
@@ -39,15 +34,16 @@ class _HomePageState extends State<HomePage> {
         }
       },
       child: Scaffold(
-          body: Stack(
-        children: const [
-          _HomeBackground(),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: _HomePageDialog(),
-          ),
-        ],
-      )),
+        body: Stack(
+          children: const [
+            _HomeBackground(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: _HomePageDialog(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

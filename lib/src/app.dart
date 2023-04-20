@@ -5,8 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sale_insight/src/config/color_schemes.g.dart';
+import 'package:sale_insight/src/config/ui_extensions/ui_extensions.dart';
 import 'package:sale_insight/src/feature/sale_insight/logic/get_data/get_data_cubit.dart';
-import 'package:sale_insight/src/feature/sale_insight/view/pages/home_page.dart';
+import 'package:sale_insight/src/feature/sale_insight/view/pages/pages.dart';
 import 'package:sales_data/sales_data.dart';
 
 _parseAndDecode(String response) {
@@ -43,27 +44,42 @@ class _AppBloc extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      lazy: false,
-      create: (context) => GetDataCubit(
-        /// Dependency injection [DI]
-        context.read<SalesDataImpl>(),
-      )..getData(),
-      child: const _AppView(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          lazy: false,
+          create: (context) => GetDataCubit(
+            /// Dependency injection [DI]
+            context.read<SalesDataImpl>(),
+          )..getData(),
+        ),
+      ],
+      child: _AppView(),
     );
   }
 }
 
 class _AppView extends StatelessWidget {
-  const _AppView({Key? key}) : super(key: key);
+  _AppView({Key? key}) : super(key: key);
+
+  final _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: _navigatorKey,
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
-      darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: lightColorScheme,
+        primaryColor: lightColorScheme.primary,
+      ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorScheme: darkColorScheme,
+        primaryColor: darkColorScheme.primary,
+      ),
       home: HomePage(),
     );
   }
