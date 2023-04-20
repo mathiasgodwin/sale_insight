@@ -25,6 +25,9 @@ dependencies:
   sales_data:
     path: packages/sales_data
   flutter_native_splash: ^2.2.19
+  fl_chart: ^0.62.0
+  flutter_charts: ^0.5.1
+  intl: ^0.18.1
 
 
 dev_dependencies:
@@ -40,7 +43,7 @@ flutter:
     - assets/images/
 
 flutter_native_splash:
-  image: "assets/images/sales-insight.jpg"
+  image: "assets/images/sales-insight-splash.png"
   fullscreen: true
   color: "#E5E5E5"
 

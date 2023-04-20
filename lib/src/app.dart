@@ -44,10 +44,11 @@ class _AppBloc extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
+      lazy: false,
       create: (context) => GetDataCubit(
         /// Dependency injection [DI]
         context.read<SalesDataImpl>(),
-      ),
+      )..getData(),
       child: const _AppView(),
     );
   }
@@ -59,7 +60,7 @@ class _AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
       darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),

@@ -26,7 +26,7 @@ class SalesDataImpl implements SalesData {
       );
       return (response.data as List<dynamic>)
           .map(
-            (e) => SalesDataModel.fromMap(e),
+            (e) => SalesDataModel.fromJson(e),
           )
           .toList();
     } catch (e) {

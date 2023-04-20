@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sale_insight/src/config/ui_extensions/ui_extensions.dart';
+import 'package:sale_insight/src/feature/sale_insight/logic/get_data/get_data_cubit.dart';
 import 'package:sale_insight/src/feature/sale_insight/view/pages/pages.dart';
 
 /// TODO: Finish the docs
 /// HomePage to...
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   /// Static named route for page
   static const String route = 'Home';
 
@@ -11,17 +14,41 @@ class HomePage extends StatelessWidget {
   static Route go() => MaterialPageRoute<void>(builder: (_) => HomePage());
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(
-      children: const [
-        _HomeBackground(),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: _HomePageDialog(),
-        ),
-      ],
-    ));
+    return BlocListener<GetDataCubit, GetDataState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (context, state) async {
+        if (state.status == GetDataStatus.loading) {
+          await context.showLoading();
+        } else if (state.status == GetDataStatus.failure) {
+          Navigator.of(context).maybePop();
+          await context.showErrorRetry(
+            state.errorMessage ?? 'An error occurred',
+            onRetry: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              context.read<GetDataCubit>().getData();
+            },
+          );
+        } else if (state.status == GetDataStatus.success) {
+          Navigator.of(context).maybePop();
+        }
+      },
+      child: Scaffold(
+          body: Stack(
+        children: const [
+          _HomeBackground(),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: _HomePageDialog(),
+          ),
+        ],
+      )),
+    );
   }
 }
 
@@ -30,8 +57,6 @@ class _HomeBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
     return LayoutBuilder(
       builder: (context, constraint) {
         return const _GradientBg();
@@ -58,21 +83,6 @@ class _GradientBg extends StatelessWidget {
     );
   }
 }
-
-// class _ImageBg extends StatelessWidget {
-//   const _ImageBg({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Image.asset(
-//       'assets/images/tron.png',
-//       fit: BoxFit.cover,
-//       height: double.infinity,
-//       width: double.infinity,
-//       alignment: Alignment.center,
-//     );
-//   }
-// }
 
 class _HomePageDialog extends StatelessWidget {
   const _HomePageDialog({Key? key}) : super(key: key);
