@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:sale_insight/src/config/ui_extensions/ui_extensions.dart';
 import 'package:sale_insight/src/feature/sale_insight/logic/get_data/get_data_cubit.dart';
 import 'package:sale_insight/src/feature/sale_insight/view/pages/pages.dart';
@@ -19,8 +20,9 @@ class HomePage extends StatelessWidget {
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) async {
         if (state.status == GetDataStatus.loading) {
-          await context.showLoading();
+          context.showLoading();
         } else if (state.status == GetDataStatus.failure) {
+          FlutterNativeSplash.remove();
           Navigator.of(context).maybePop();
           await context.showErrorRetry(
             state.errorMessage ?? 'An error occurred',
@@ -30,6 +32,7 @@ class HomePage extends StatelessWidget {
             },
           );
         } else if (state.status == GetDataStatus.success) {
+          FlutterNativeSplash.remove();
           Navigator.of(context).maybePop();
         }
       },

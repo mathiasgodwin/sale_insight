@@ -1,7 +1,13 @@
 # sale_insight
 
-A new Flutter project.
+# How to run:
+No extra setup is required, just...
+```bash
+  flutter logs & flutter run 
+```
 
+# Note:
+The app support many type of gestures, zooming, panning, loading more data by scrolling to the side and others.
 ## Getting Started
 
 This project is a starting point for a Flutter application.
