@@ -8,7 +8,7 @@ No extra setup is required, just...
 
 # Note:
 The app support many type of gestures, zooming, panning, loading more data by scrolling to the side and others.
-Appetize: https://appetize.io/app/nf6wjtq5tzdgeysnsmnfcapzqy
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
